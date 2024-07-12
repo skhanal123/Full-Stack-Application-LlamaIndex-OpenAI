@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    html,
+    body,
+    blockquote,
+    code,
+    input,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    pre {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: white
+    }
+
+    #mainbody {
+        display: flex;
+        justify-content: center
+    }
+
+    #chatbody {
+        height: auto;
+        width: 800px;
+
+    }
+
+    #banner {
+        display: flex;
+        height: 50px;
+        width: 800px;
+        background: #618cad;
+        margin-bottom: 10px;
+        margin-top: 30px;
+
+    }
+
+    #banner_content {
+        height: 50px;
+    }
+
+
+    #banner_text {
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        width: 800px;
+
+    }
+
+    input::placeholder {
+        color: rgb(203, 200, 200);
+        font-size: 2 px;
+        font-style: italic;
+    }
+
+    #question {
+        height: 50px;
+        width: 800px;
+        border-radius: 10px;
+        border-width: 2px;
+        border-color: #e2dfdf;
+    }
+
+    #submit_button {
+        background-color: #618cad;
+        color: white;
+        border: 0;
+        padding: 8px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<body>
+    <div id="mainbody">
+        <div id="chatbody">
+            <div id="banner">
+
+                <div id=banner_content>
+                    <h2 id="banner_text">LLM powered chatbot with my research papers</h2>
+                </div>
+
+            </div>
+            <div>
+                <div id="converstionThread"></div><br><br>
+                <form id="retForm" onsubmit="ajax4(); return false">
+                    <label for="question">Start your conversation</label><br>
+                    <input placeholder="Ask your question" type="text" id="question" name="question">
+                    <input type="submit" id="submit_button" value="Submit">
+                </form>
+                <br>
+                <br>
+                <p id="ajax4output"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ajax4() {
+            let a = document.getElementById("converstionThread")
+            input = document.getElementById("question").value
+            a.innerHTML += "<p><i>Question: </i>" + input + "</p>"
+            const xhr = new XMLHttpRequest()
+            xhr.open("POST", "http://127.0.0.1:5000/userQuery/", true)
+            xhr.responseType = "json"
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("Suman")
+                    b = xhr.response
+                    answer = (b.response.response)
+                    a.innerHTML += "<p><i>Response: </i>" + answer + "</p>"
+                }
+                else {
+                    console.log("Problem Occured")
+                }
+            }
+            mydata = { "query": input }
+            console.log(mydata)
+            xhr.send(JSON.stringify(mydata));
+            document.getElementById("retForm").reset();
+        }
+    </script>
+</body>
+
+
+</html>
